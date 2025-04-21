@@ -1,7 +1,6 @@
 const puppeteer = require('puppeteer');
 const faker = require('faker');
 
-// List user agents acak
 const userAgents = [
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Safari/605.1.15",
@@ -9,10 +8,7 @@ const userAgents = [
   "Mozilla/5.0 (iPhone; CPU iPhone OS 15_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Mobile/15E148 Safari/604.1"
 ];
 
-// Daftar proxy dummy (ganti dengan proxy asli jika ada)
-const proxies = [
-  "", "", "", "" // kosong artinya pakai koneksi langsung
-];
+const proxies = ["", "", "", ""];
 
 function generateGmail() {
   const username = faker.internet.userName().replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
@@ -26,8 +22,9 @@ function generateGmail() {
     if (proxy) launchArgs.push(`--proxy-server=${proxy}`);
 
     const browser = await puppeteer.launch({
-      headless: true,
-      args: launchArgs
+      headless: "new",
+      args: launchArgs,
+      executablePath: '/usr/bin/google-chrome-stable' // Wajib Gitpod
     });
 
     const page = await browser.newPage();
@@ -51,6 +48,6 @@ function generateGmail() {
 
     await page.waitForTimeout(3000);
     await browser.close();
-    await new Promise(resolve => setTimeout(resolve, 2000)); // delay antar loop
+    await new Promise(resolve => setTimeout(resolve, 2000));
   }
 })();
